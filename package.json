@@ -1,0 +1,38 @@
+{
+  "name": "@alexbol99/collision_distance",
+  "version": "1.0.0",
+  "description": "Algorithm to calculate one-dimensional collision distance between two shapes",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexbol99/collision_distance.git"
+  },
+  "keywords": [
+    "collision",
+    "distance",
+    "flatten-js"
+  ],
+  "author": "Alex Bol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexbol99/collision_distance/issues"
+  },
+  "homepage": "https://github.com/alexbol99/collision_distance#readme",
+  "engines": {
+    "node": ">=4.2.4"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.12.0",
+    "istanbul": "^0.4.5",
+    "jsdoc": "^3.5.5",
+    "minami": "^1.2.3",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "flatten-js": "^0.2.19"
+  }
+}
