@@ -115,12 +115,47 @@ module.exports = class CollisionDistance {
         let collision_distance = Number.POSITIVE_INFINITY;
         let distance;
 
+        // test translation of arc2.center to arc1 enlarged by r2
         let arc_enlarged = arc1.clone();
         arc_enlarged.r += arc2.r;
-
         distance = CollisionDistance.point2shape(arc2.center, arc_enlarged);
         if (distance < collision_distance) {
-            collision_distance = distance;
+            // additional check that transformed arc actually touching
+            let [dist_tmp, shortest_segment_tmp] =
+                arc1.distanceTo( CollisionDistance.translateArc(arc2, new Vector(-distance,0)));
+            if (Flatten.Utils.EQ_0(dist_tmp)) {
+                collision_distance = distance;
+            }
+        }
+
+        // test translation of arc2.center to arc1 reduced by r2
+        if (Flatten.Utils.GT(arc1.r > arc2.r)) {
+            let arc_reduced = arc1.clone();
+            arc_reduced.r -= arc2.r;
+            distance = CollisionDistance.point2shape(arc2.center, arc_reduced);
+            if (distance < collision_distance) {
+                // additional check that transformed arc actually touching
+                let [dist_tmp, shortest_segment_tmp] =
+                    arc1.distanceTo( CollisionDistance.translateArc(arc2, new Vector(-distance,0)));
+                if (Flatten.Utils.EQ_0(dist_tmp)) {
+                    collision_distance = distance;
+                }
+            }
+        }
+
+        // test translation of arc1.center to arc2 reduced by r1
+        if (Flatten.Utils.GT(arc1.r < arc2.r)) {
+            let arc_reduced = arc2.clone();
+            arc_reduced.r -= arc1.r;
+            distance = CollisionDistance.point2shape(arc1.center, arc_reduced);
+            if (distance < collision_distance) {
+                // additional check that transformed arc actually touching
+                let [dist_tmp, shortest_segment_tmp] =
+                    arc1.distanceTo( CollisionDistance.translateArc(arc2, new Vector(-distance,0)));
+                if (Flatten.Utils.EQ_0(dist_tmp)) {
+                    collision_distance = distance;
+                }
+            }
         }
 
         for (let point of arc1.vertices) {
@@ -136,6 +171,12 @@ module.exports = class CollisionDistance {
             }
         }
         return collision_distance;
+    }
+
+    static translateArc(arc, vec) {
+        let arc_tmp = arc.clone();
+        arc_tmp.pc.translate(vec);
+        return arc_tmp;
     }
 
     static translate(polygon, vec) {
