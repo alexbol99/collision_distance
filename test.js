@@ -41,10 +41,11 @@ describe('#CollisionDistance', function() {
         console.log(distance);
         expect(distance).to.be.positive;
 
-        let v_trans = vector(-1, 0).multiply(distance);
-        let arct_trans = arc2.clone();
-        arct_trans.pc = arc2.pc.translate(v_trans);
-        let ip = arc1.intersect(arct_trans);
+        let [dist_tmp, shortest_segment_tmp] =
+            arc1.distanceTo(CollisionDistance.translateArc(arc2, vector(-distance,0)));
+        expect(dist_tmp).to.equal(0);
+
+        let ip = arc1.intersect(CollisionDistance.translateArc(arc2, vector(-distance,0)));
         expect(ip.length).to.equal(1);
     });
     it('Can calculate collision distance between two polygons', function() {
