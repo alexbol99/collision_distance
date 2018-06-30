@@ -3,7 +3,7 @@
 let Flatten = require('flatten-js');
 let {Point, Vector, Segment, Arc, Line, Box, Polygon} = Flatten;
 
-module.exports = class CollisionDistance {
+class CollisionDistance {
     static apply(polygon1, polygon2) {
         let collision_distance = Number.POSITIVE_INFINITY;
         for (let edge of [...polygon2.edges]) {
@@ -199,4 +199,9 @@ module.exports = class CollisionDistance {
         }
         return newPolygon;
     }
+
 };
+
+CollisionDistance.Flatten = Flatten;
+
+module.exports = CollisionDistance;
