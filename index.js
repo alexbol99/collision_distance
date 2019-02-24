@@ -1,7 +1,7 @@
 "use strict";
 
-let Flatten = require('flatten-js');
-let {Point, Vector, Segment, Arc, Line, Box, Polygon} = Flatten;
+import Flatten from "@flatten-js/core";
+import {Point, Vector, Segment, Arc, Line, Box, Polygon} from "@flatten-js/core";
 
 class CollisionDistance {
     static apply(polygon1, polygon2) {
@@ -202,6 +202,6 @@ class CollisionDistance {
 
 };
 
-CollisionDistance.Flatten = Flatten;
+// CollisionDistance.Flatten = Flatten;
 
-module.exports = CollisionDistance;
+export default CollisionDistance;

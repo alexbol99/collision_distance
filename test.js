@@ -1,11 +1,15 @@
 'use strict';
 
-let expect = require('chai').expect;
-let CollisionDistance = require('./index');
-let Flatten = require('flatten-js');
+// let expect = require('chai').expect;
+// let CollisionDistance = require('./index');
+// let Flatten = require('flatten-js');
 
-let {Polygon} = Flatten;
-let {point, vector, circle, line, segment, arc, ray} = Flatten;
+import {expect} from 'chai';
+import CollisionDistance from './index';
+
+import Flatten from '@flatten-js/core'
+import {Polygon} from '@flatten-js/core';
+import {point, vector, circle, line, segment, arc, ray} from '@flatten-js/core';
 //
 // let {Distance} = Flatten;
 
@@ -38,8 +42,7 @@ describe('#CollisionDistance', function() {
         let arc1 = arc(point(0,5), 5, -Math.PI/2, Math.PI/2, Flatten.CCW);
         let arc2 = arc(point(10,2), 2, -Math.PI/2, Math.PI/2, Flatten.CW);
         let distance = CollisionDistance.arc2arc(arc1, arc2);
-        console.log(distance);
-        expect(distance).to.be.positive;
+        expect(distance).to.be.above(0);
 
         let [dist_tmp, shortest_segment_tmp] =
             arc1.distanceTo(CollisionDistance.translateArc(arc2, vector(-distance,0)));
