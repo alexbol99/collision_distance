@@ -1,8 +1,10 @@
-"use strict";
+'use strict';
 
-import {Vector, Segment, Arc, Line, Box, Utils} from '@flatten-js/core';
+Object.defineProperty(exports, '__esModule', { value: true });
 
-export function  collisionDistance(polygon1, polygon2) {
+var core = require('@flatten-js/core');
+
+function  collisionDistance(polygon1, polygon2) {
     let collision_distance = Number.POSITIVE_INFINITY;
     for (let edge of [...polygon2.edges]) {
         let distance = edge2polygon(edge, polygon1);
@@ -15,7 +17,7 @@ export function  collisionDistance(polygon1, polygon2) {
 
 function edge2polygon(edge2, polygon1) {
     let shapeBox = edge2.shape.box;
-    let box = new Box(
+    let box = new core.Box(
         Number.NEGATIVE_INFINITY,
         shapeBox.ymin,
         Number.POSITIVE_INFINITY,
@@ -25,16 +27,16 @@ function edge2polygon(edge2, polygon1) {
     let resp_edges = polygon1.edges.search(box);
     for (let edge1 of resp_edges) {
         let distance;
-        if (edge1.shape instanceof Segment && edge2.shape instanceof Segment) {
+        if (edge1.shape instanceof core.Segment && edge2.shape instanceof core.Segment) {
             distance = segment2segment(edge1.shape, edge2.shape);
         }
-        else if (edge1.shape instanceof Arc && edge2.shape instanceof Segment) {
+        else if (edge1.shape instanceof core.Arc && edge2.shape instanceof core.Segment) {
             distance = segment2arc(edge2.shape, edge1.shape);
         }
-        else if (edge1.shape instanceof Segment && edge2.shape instanceof Arc) {
+        else if (edge1.shape instanceof core.Segment && edge2.shape instanceof core.Arc) {
             distance = segment2arc(edge1.shape, edge2.shape);
         }
-        else if (edge1.shape instanceof Arc && edge2.shape instanceof Arc) {
+        else if (edge1.shape instanceof core.Arc && edge2.shape instanceof core.Arc) {
             distance = arc2arc(edge1.shape, edge2.shape);
         }
 
@@ -46,7 +48,7 @@ function edge2polygon(edge2, polygon1) {
 }
 
 function point2shape(point, shape) {
-    let line = new Line(point, new Vector(0, 1));
+    let line = new core.Line(point, new core.Vector(0, 1));
     let intersections = line.intersect(shape);          // segment or arc
     let collision_distance = Number.POSITIVE_INFINITY;
     for (let ip of intersections) {
@@ -58,7 +60,7 @@ function point2shape(point, shape) {
     return collision_distance;
 }
 
-export function segment2segment(segment1, segment2) {
+function segment2segment(segment1, segment2) {
     let collision_distance = Number.POSITIVE_INFINITY;
     for (let point of segment1.vertices) {
         let distance = point2shape(point, segment2);
@@ -75,9 +77,9 @@ export function segment2segment(segment1, segment2) {
     return collision_distance;
 }
 
-export function segment2arc(segment, arc) {
+function segment2arc(segment, arc) {
     let collision_distance = Number.POSITIVE_INFINITY;
-    let v_s = new Vector(segment.start, segment.end);
+    let v_s = new core.Vector(segment.start, segment.end);
     v_s = v_s.normalize();
 
     let v_n = [v_s.rotate90CCW().multiply(arc.r), v_s.rotate90CW().multiply(arc.r)];
@@ -109,7 +111,7 @@ export function segment2arc(segment, arc) {
     return collision_distance;
 }
 
-export function arc2arc(arc1, arc2) {
+function arc2arc(arc1, arc2) {
     let collision_distance = Number.POSITIVE_INFINITY;
     let distance;
 
@@ -120,37 +122,37 @@ export function arc2arc(arc1, arc2) {
     if (distance < collision_distance) {
         // additional check that transformed arc actually touching
         let [dist_tmp, shortest_segment_tmp] =
-            arc1.distanceTo(arc2.translate(new Vector(-distance, 0)));
-        if (Utils.EQ_0(dist_tmp)) {
+            arc1.distanceTo(arc2.translate(new core.Vector(-distance, 0)));
+        if (core.Utils.EQ_0(dist_tmp)) {
             collision_distance = distance;
         }
     }
 
     // test translation of arc2.center to arc1 reduced by r2
-    if (Utils.GE(arc1.r, arc2.r)) {
+    if (core.Utils.GE(arc1.r, arc2.r)) {
         let arc_reduced = arc1.clone();
         arc_reduced.r -= arc2.r;
         distance = point2shape(arc2.center, arc_reduced);
         if (distance < collision_distance) {
             // additional check that transformed arc actually touching
             let [dist_tmp, shortest_segment_tmp] =
-                arc1.distanceTo(arc2.translate(new Vector(-distance, 0)));
-            if (Utils.EQ_0(dist_tmp)) {
+                arc1.distanceTo(arc2.translate(new core.Vector(-distance, 0)));
+            if (core.Utils.EQ_0(dist_tmp)) {
                 collision_distance = distance;
             }
         }
     }
 
     // test translation of arc1.center to arc2 reduced by r1
-    if (Utils.LT(arc1.r, arc2.r)) {
+    if (core.Utils.LT(arc1.r, arc2.r)) {
         let arc_reduced = arc2.clone();
         arc_reduced.r -= arc1.r;
         distance = point2shape(arc1.center, arc_reduced);
         if (distance < collision_distance) {
             // additional check that transformed arc actually touching
             let [dist_tmp, shortest_segment_tmp] =
-                arc1.distanceTo(arc2.translate(new Vector(-distance, 0)));
-            if (Utils.EQ_0(dist_tmp)) {
+                arc1.distanceTo(arc2.translate(new core.Vector(-distance, 0)));
+            if (core.Utils.EQ_0(dist_tmp)) {
                 collision_distance = distance;
             }
         }
@@ -170,3 +172,8 @@ export function arc2arc(arc1, arc2) {
     }
     return collision_distance;
 }
+
+exports.arc2arc = arc2arc;
+exports.collisionDistance = collisionDistance;
+exports.segment2arc = segment2arc;
+exports.segment2segment = segment2segment;

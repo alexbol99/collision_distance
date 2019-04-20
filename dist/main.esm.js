@@ -1,8 +1,6 @@
-"use strict";
+import { Box, Segment, Arc, Vector, Utils, Line } from '@flatten-js/core';
 
-import {Vector, Segment, Arc, Line, Box, Utils} from '@flatten-js/core';
-
-export function  collisionDistance(polygon1, polygon2) {
+function  collisionDistance(polygon1, polygon2) {
     let collision_distance = Number.POSITIVE_INFINITY;
     for (let edge of [...polygon2.edges]) {
         let distance = edge2polygon(edge, polygon1);
@@ -58,7 +56,7 @@ function point2shape(point, shape) {
     return collision_distance;
 }
 
-export function segment2segment(segment1, segment2) {
+function segment2segment(segment1, segment2) {
     let collision_distance = Number.POSITIVE_INFINITY;
     for (let point of segment1.vertices) {
         let distance = point2shape(point, segment2);
@@ -75,7 +73,7 @@ export function segment2segment(segment1, segment2) {
     return collision_distance;
 }
 
-export function segment2arc(segment, arc) {
+function segment2arc(segment, arc) {
     let collision_distance = Number.POSITIVE_INFINITY;
     let v_s = new Vector(segment.start, segment.end);
     v_s = v_s.normalize();
@@ -109,7 +107,7 @@ export function segment2arc(segment, arc) {
     return collision_distance;
 }
 
-export function arc2arc(arc1, arc2) {
+function arc2arc(arc1, arc2) {
     let collision_distance = Number.POSITIVE_INFINITY;
     let distance;
 
@@ -170,3 +168,5 @@ export function arc2arc(arc1, arc2) {
     }
     return collision_distance;
 }
+
+export { arc2arc, collisionDistance, segment2arc, segment2segment };
