@@ -1,6 +1,6 @@
 {
   "name": "@alexbol99/collision_distance",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Algorithm to calculate one-dimensional collision distance between two shapes",
   "main": "dist/main.cjs.js",
   "umd:main": "dist/main.umd.js",
